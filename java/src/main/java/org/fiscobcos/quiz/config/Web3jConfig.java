@@ -18,10 +18,9 @@ package org.fiscobcos.quiz.config;
 import org.fisco.bcos.channel.client.Service;
 import org.fisco.bcos.web3j.protocol.Web3j;
 import org.fisco.bcos.web3j.protocol.channel.ChannelEthereumService;
+import org.fiscobcos.quiz.constants.ConnectConstants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import org.fiscobcos.quiz.constants.ConnectConstants;
 
 @Configuration
 public class Web3jConfig {

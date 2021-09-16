@@ -15,35 +15,28 @@
  */
 package org.fiscobcos.quiz.service;
 
-import java.math.BigInteger;
-
+import lombok.extern.slf4j.Slf4j;
+import org.fiscobcos.quiz.BaseTest;
 import org.junit.FixMethodOrder;
-import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.fiscobcos.quiz.BaseTest;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * LagCreditServiceTest
  *
- * @Description: LagCreditServiceTest
  * @author graysonzhang
+ * @Description: LagCreditServiceTest
  * @data 2019-05-08 17:48:14
- *
  */
 @Slf4j
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class LagCreditServiceTest extends BaseTest {
-    
+
+    static private final String owner = "0xb1f49311c909bb22fdaf366771a15a983e8c0148";
+    static private final String creditAddr = "";
+    private final String toAddr = "0x015e68c28690b3250b36319d7c04653e0fbc4f26";
     @Autowired
     private CreditLetterService creditLetterService;
-    
-    static private String owner = "0xb1f49311c909bb22fdaf366771a15a983e8c0148";
-    
-    private String toAddr = "0x015e68c28690b3250b36319d7c04653e0fbc4f26";
-    
-    static private String creditAddr = "";
 //
 //    @Test
 //    public void testAdeploy(){

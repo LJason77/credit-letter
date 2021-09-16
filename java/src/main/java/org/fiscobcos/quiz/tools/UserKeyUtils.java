@@ -15,23 +15,21 @@
  */
 package org.fiscobcos.quiz.tools;
 
+import lombok.extern.slf4j.Slf4j;
 import org.fisco.bcos.web3j.crypto.ECKeyPair;
 import org.fisco.bcos.web3j.crypto.Keys;
 import org.fisco.bcos.web3j.utils.Numeric;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * UserKeyUtils
  *
- * @Description: UserKeyUtils
  * @author graysonzhang
+ * @Description: UserKeyUtils
  * @data 2019-05-08 15:19:50
- *
  */
 @Slf4j
-public class UserKeyUtils{
-    
+public class UserKeyUtils {
+
     static final int PUBLIC_KEY_SIZE = 64;
     static final int PUBLIC_KEY_LENGTH_IN_HEX = PUBLIC_KEY_SIZE << 1;
 
@@ -42,15 +40,15 @@ public class UserKeyUtils{
             String privateKey = Numeric.toHexStringNoPrefix(keyPair.getPrivateKey());
             String address = "0x" + Keys.getAddress(publicKey);
 
-            System.out.println("public key :" +  publicKey);
+            System.out.println("public key :" + publicKey);
             System.out.println("private key:" + privateKey);
             System.out.println("address :" + address);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
-        }   
+        }
     }
-    
+
     public static void main(String[] args) {
         createUserKey();
     }

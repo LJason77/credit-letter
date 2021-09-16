@@ -3,19 +3,18 @@ package org.fiscobcos.quiz.config;
 import lombok.Data;
 import org.fisco.bcos.channel.client.Service;
 import org.fisco.bcos.channel.handler.GroupChannelConnectionsConfig;
+import org.fiscobcos.quiz.constants.ConnectConstants;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import org.fiscobcos.quiz.constants.ConnectConstants;
 
 @Data
 @Configuration
 @ConfigurationProperties(prefix = "channel-service")
 public class ServiceConfig {
 
-    private String orgID;
     private static int groupId = 1;
+    private String orgID;
 
     @Bean
     public Service getService(GroupChannelConnectionsConfig groupChannelConnectionsConfig) {

@@ -15,8 +15,6 @@
  */
 package org.fiscobcos.quiz.service;
 
-import java.math.BigInteger;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.fisco.bcos.web3j.crypto.Credentials;
@@ -34,6 +32,9 @@ import org.fiscobcos.quiz.contracts.CreditLetterFactory;
 import org.fiscobcos.quiz.contracts.CreditLetterFactory.CreateLogEventResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.math.BigInteger;
+import java.util.List;
 
 /**
  * CreditLetterService
@@ -55,7 +56,7 @@ public class CreditLetterService {
         try {
             Credentials credentials = Credentials.create(AddressConstants.DEFAULT_READ_PRIVATE_KEY);
             CreditLetterFactory creditLetterFactory = CreditLetterFactory.deploy(web3j,
-                credentials, new StaticGasProvider(GasConstants.GAS_PRICE, GasConstants.GAS_LIMIT)).send();
+                    credentials, new StaticGasProvider(GasConstants.GAS_PRICE, GasConstants.GAS_LIMIT)).send();
             log.info("Factory address is {}", creditLetterFactory.getContractAddress());
             return creditLetterFactory.getContractAddress();
         } catch (Exception e) {
@@ -68,28 +69,28 @@ public class CreditLetterService {
     private CreditLetterFactory loadCreditLetterFactory(String address, String privateKey) {
         Credentials credentials = Credentials.create(privateKey);
         return CreditLetterFactory.load(address, web3j, credentials,
-            new StaticGasProvider(GasConstants.GAS_PRICE, GasConstants.GAS_LIMIT));
+                new StaticGasProvider(GasConstants.GAS_PRICE, GasConstants.GAS_LIMIT));
     }
 
     // Factory create
     public String createCreditLetter(
-        String issuer,
-        String holder,
-        String acceptor,
-        Long issuanceTime,
-        Integer interestRate,
-        Integer credit,
-        String factoryAddress,
-        String privateKey
+            String issuer,
+            String holder,
+            String acceptor,
+            Long issuanceTime,
+            Integer interestRate,
+            Integer credit,
+            String factoryAddress,
+            String privateKey
     ) {
         try {
             CreditLetterFactory creditLetterFactory = loadCreditLetterFactory(factoryAddress, privateKey);
             TransactionReceipt receipt = creditLetterFactory.create(issuer, holder, acceptor,
-                new BigInteger(String.valueOf(issuanceTime), 10),
-                new BigInteger(String.valueOf(interestRate), 10),
-                new BigInteger(String.valueOf(credit), 10)).send();
+                    new BigInteger(String.valueOf(issuanceTime), 10),
+                    new BigInteger(String.valueOf(interestRate), 10),
+                    new BigInteger(String.valueOf(credit), 10)).send();
             List<CreateLogEventResponse> eventList =
-                creditLetterFactory.getCreateLogEvents(receipt);
+                    creditLetterFactory.getCreateLogEvents(receipt);
             for (CreateLogEventResponse event : eventList) {
                 if (StringUtils.isEmpty(event.addr)) {
                     continue;
@@ -104,19 +105,19 @@ public class CreditLetterService {
 
     // Factory split
     public String splitCreditLetter(
-        String originalCreditLetterAddress,
-        Integer amount,
-        Integer timestamp,
-        String factoryAddress,
-        String privateKey
+            String originalCreditLetterAddress,
+            Integer amount,
+            Integer timestamp,
+            String factoryAddress,
+            String privateKey
     ) {
         try {
             CreditLetterFactory creditLetterFactory = loadCreditLetterFactory(factoryAddress, privateKey);
             TransactionReceipt receipt = creditLetterFactory.split(originalCreditLetterAddress,
-                new BigInteger(String.valueOf(amount), 10),
-                new BigInteger(String.valueOf(timestamp), 10)).send();
+                    new BigInteger(String.valueOf(amount), 10),
+                    new BigInteger(String.valueOf(timestamp), 10)).send();
             List<CreateLogEventResponse> eventList =
-                creditLetterFactory.getCreateLogEvents(receipt);
+                    creditLetterFactory.getCreateLogEvents(receipt);
             for (CreateLogEventResponse event : eventList) {
                 if (StringUtils.isEmpty(event.addr)) {
                     continue;
@@ -135,7 +136,7 @@ public class CreditLetterService {
     private CreditLetter loadCreditLetter(String address, String privateKey) {
         Credentials credentials = Credentials.create(privateKey);
         return CreditLetter.load(address, web3j, credentials,
-            new StaticGasProvider(GasConstants.GAS_PRICE, GasConstants.GAS_LIMIT));
+                new StaticGasProvider(GasConstants.GAS_PRICE, GasConstants.GAS_LIMIT));
     }
 
     // Letter getInfo
@@ -143,7 +144,7 @@ public class CreditLetterService {
         CreditLetter creditLetter = loadCreditLetter(address, AddressConstants.DEFAULT_READ_PRIVATE_KEY);
         try {
             Tuple8<String, String, String, BigInteger, BigInteger, BigInteger, Boolean, Boolean> tuple
-                = creditLetter.getInfo().send();
+                    = creditLetter.getInfo().send();
             CreditLetterInfo creditLetterInfo = new CreditLetterInfo();
             creditLetterInfo.setIssuer(tuple.getValue1());
             creditLetterInfo.setHolder(tuple.getValue2());
@@ -165,12 +166,12 @@ public class CreditLetterService {
         try {
             CreditLetter creditLetter = loadCreditLetter(address, privateKey);
             TransactionReceipt receipt = creditLetter.setStatusApproved(status,
-                new BigInteger(String.valueOf(timestamp), 10)).send();
+                    new BigInteger(String.valueOf(timestamp), 10)).send();
             List<StatusChangedEventResponse> eventList =
-                creditLetter.getStatusChangedEvents(receipt);
+                    creditLetter.getStatusChangedEvents(receipt);
             for (StatusChangedEventResponse event : eventList) {
                 if (event.id.intValue() == BigInteger.ZERO.intValue() &&
-                    event.latestStatus.equals(status)) {
+                        event.latestStatus.equals(status)) {
                     return true;
                 }
             }
@@ -185,12 +186,12 @@ public class CreditLetterService {
         try {
             CreditLetter creditLetter = loadCreditLetter(address, privateKey);
             TransactionReceipt receipt = creditLetter.setStatusPaid(status,
-                new BigInteger(String.valueOf(timestamp), 10)).send();
+                    new BigInteger(String.valueOf(timestamp), 10)).send();
             List<StatusChangedEventResponse> eventList =
-                creditLetter.getStatusChangedEvents(receipt);
+                    creditLetter.getStatusChangedEvents(receipt);
             for (StatusChangedEventResponse event : eventList) {
                 if (event.id.intValue() == BigInteger.ONE.intValue() &&
-                    event.latestStatus.equals(status)) {
+                        event.latestStatus.equals(status)) {
                     return true;
                 }
             }
@@ -205,9 +206,9 @@ public class CreditLetterService {
         try {
             CreditLetter creditLetter = loadCreditLetter(contractAddress, privateKey);
             TransactionReceipt receipt = creditLetter.transfer(to,
-                new BigInteger(String.valueOf(timestamp), 10)).send();
+                    new BigInteger(String.valueOf(timestamp), 10)).send();
             List<HolderChangedEventResponse> eventList =
-                creditLetter.getHolderChangedEvents(receipt);
+                    creditLetter.getHolderChangedEvents(receipt);
             for (HolderChangedEventResponse event : eventList) {
                 if (event.to.equalsIgnoreCase(to)) {
                     return true;
