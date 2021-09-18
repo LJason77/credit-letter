@@ -1,4 +1,5 @@
-pragma solidity ^0.4.25;
+// SPDX-License-Identifier: GPL-3.0
+pragma solidity >=0.4.25;
 
 /**
  * @title Credit letter
@@ -46,7 +47,7 @@ contract CreditLetter {
         uint256 issuanceTimeVal,
         uint256 interestRateVal,
         uint256 creditVal
-    ) public {
+    ) {
         // 思考题：为什么要用tx.origin？
         require(tx.origin == issuerVal || tx.origin == acceptorVal, "Only issuer or acceptor can issue his/her own letter");
         issuer = issuerVal;
@@ -99,7 +100,7 @@ contract CreditLetter {
         emit HolderChanged(msg.sender, to, timestamp);
     }
 
-    function getAllTransferLogs() public view returns (address[], uint256[]) {
+    function getAllTransferLogs() public view returns (address[] memory, uint256[] memory) {
         // 只有发证人和持证人才能查看流转记录
         require(msg.sender == issuer || msg.sender == acceptor, "Only issuer or acceptor can check transfer logs");
         return (holderChangeHistory, holderChangeTimestamps);
